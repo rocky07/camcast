@@ -1,0 +1,70 @@
+<html>
+  <head>
+    <title>JavaScript Video Stream</title>
+  </head>
+  <body>
+    <video id="localVideo" controls></video>
+    <video id="remoteVideo" controls></video>
+    <script>
+      const localVideo = document.querySelector("#localVideo");
+      const remoteVideo = document.querySelector("#remoteVideo");
+      const peerConnection = new RTCPeerConnection();
+      let stream;
+      if (navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((mediaStream) => {
+            stream = mediaStream;
+            localVideo.srcObject = stream;
+            peerConnection.addStream(stream);
+            peerConnection.createOffer().then((offer) => {
+              peerConnection.setLocalDescription(offer);
+              sendToServer({ type: "offer", offer: offer });
+            });
+          });
+      }
+      peerConnection.ontrack = function (event) {
+        remoteVideo.srcObject = event.streams[0];
+      };
+      peerConnection.onicecandidate = function (event) {
+        if (event.candidate) {
+          sendToServer({ type: "candidate", candidate: event.candidate });
+        }
+      };
+      function sendToServer(message) {
+        // Implementation to send message to server goes here
+        // This can be achieved through WebSockets, XHR, or any other method
+        // For example, using WebSockets:
+           ws = new WebSocket("ws://localhost:8080");
+           ws.onopen = function() {
+             ws.send(JSON.stringify(message));
+           };
+      }
+      function receiveFromServer(message) {
+        // Implementation to receive message from server goes here
+        // This can be achieved through WebSockets, XHR, or any other method
+        // For example, using WebSockets:
+           ws = new WebSocket("ws://localhost:8080");
+           ws.onmessage = function(event) {
+             receiveFromServer(JSON.parse(event.data));
+           };
+        switch (message.type) {
+          case "offer":
+            peerConnection.setRemoteDescription(new RTCSessionDescription(message.offer));
+            peerConnection.createAnswer().then((answer) => {
+              peerConnection.setLocalDescription(answer);
+              sendToServer({ type: "answer", answer: answer });
+            });
+            break;
+          case "answer":
+            peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+            break;
+          case "candidate":
+            peerConnection.addIceCandidate(new RTCIceCandidate(message.candidate));
+            break;
+        }
+      }
+    </script>
+  </body>
+</html>
+
