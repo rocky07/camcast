@@ -12,4 +12,9 @@ public class MainController {
     public String welcome() {
         return "greetings.html";
     }  
+
+    @RequestMapping("/video")
+    public String video() {
+        return "video.html";
+    }  
 }

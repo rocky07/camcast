@@ -1,5 +1,5 @@
-/home/ramesanrakesh/workspace/camcast/src/main/java/com/ff/camcast/camcast/CamcastApplication.java
-/home/ramesanrakesh/workspace/camcast/src/main/java/com/ff/camcast/camcast/controller/DataController.java
-/home/ramesanrakesh/workspace/camcast/src/main/java/com/ff/camcast/camcast/SecurityConfig.java
-/home/ramesanrakesh/workspace/camcast/src/main/java/com/ff/camcast/camcast/controller/MainController.java
-/home/ramesanrakesh/workspace/camcast/src/main/java/com/ff/camcast/camcast/ServerConfig.java
+/workspaces/camcast/src/main/java/com/ff/camcast/camcast/controller/MainController.java
+/workspaces/camcast/src/main/java/com/ff/camcast/camcast/ServerConfig.java
+/workspaces/camcast/src/main/java/com/ff/camcast/camcast/SecurityConfig.java
+/workspaces/camcast/src/main/java/com/ff/camcast/camcast/CamcastApplication.java
+/workspaces/camcast/src/main/java/com/ff/camcast/camcast/controller/DataController.java
